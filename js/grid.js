@@ -17,33 +17,17 @@ $(document).ready(function() {
 	
 	//Listen for key press
 	$('body').keydown(function(e) {
-		switch(e.keyCode) {
-			case 37: //left arrow
-				updatePlayer("left");
-				break;
-			case 38: //up arrow
-				updatePlayer("up");
-				break;
-			case 39: //right arrow
-				updatePlayer("right");
-				break;
-			case 40: //down arrow
-				updatePlayer("down");
-				break;
-			default:
-				//Do nothing
+		if (e.keyCode >= 37 && e.keyCode <= 40) {
+			updatePlayer(e.keyCode);
+			updateGrid(player1);
+			printGrid();
 		}
-
-		updateGrid(player1);
-		printGrid();
-		
 	});
-	
 	
 	
 	function updatePlayer(direction) {
 		switch(direction) {
-			case "left":
+			case 37: //left arrow
 				if (player1.xPos > 0) {
 					player1.xPos--;
 				}
@@ -51,7 +35,7 @@ $(document).ready(function() {
 					alert("EDGE");
 				}
 				break;
-			case "up":
+			case 38: //up arrow
 				if (player1.yPos > 0) {
 					player1.yPos--;
 				}
@@ -59,7 +43,7 @@ $(document).ready(function() {
 					alert("EDGE");
 				}
 				break;
-			case "right":
+			case 39: //right arrow
 				if (player1.xPos < width-1) {
 					player1.xPos++;
 				}
@@ -67,7 +51,7 @@ $(document).ready(function() {
 					alert("EDGE");
 				}
 				break;
-			case "down":
+			case 40: //down arrow
 				if (player1.yPos < height-1) {
 					player1.yPos++;
 				}
