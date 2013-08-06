@@ -8,19 +8,25 @@ $(document).ready(function() {
 		grid[i] = new Array(height);
 	}
 	
-	var player1 = new Player(4, 5, 'X');
+	var player1 = new Player(0, 0, 'X');
 		
 	populateGrid();
+	updateGrid(player1);
 	printGrid();
 	
 	
-	//At some point pass a grid as an argument, rather than using global
+	//TODO At some point pass a grid as an argument, rather than using global
 	function populateGrid() {
 		for (var i=0; i<width; i++) {
 			for (var j=0; j<height; j++) {
 				grid[i][j] = '0';
 			}
 		}
+	}
+	
+	//TODO accept an array of players as argument
+	function updateGrid(player) {
+		grid[player.xPos][player.yPos] = player.character;
 	}
 	
 	function printGrid() {
