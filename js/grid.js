@@ -67,16 +67,24 @@ $(document).ready(function() {
 	
 	function update() {
     if(keydown.up) {
-      player1.yPos -= 5;
+			if(player1.yPos > 0) {
+				player1.yPos -= 5;
+			}
     }
     if(keydown.right) {
-      player1.xPos += 5;
+			if(player1.xPos < mapPixelWidth-tileWidth) {
+				player1.xPos += 5;
+			}
     }
     if(keydown.down) {
-      player1.yPos += 5;
+			if(player1.yPos < mapPixelHeight-tileHeight) {
+				player1.yPos += 5;
+			}
     }
     if(keydown.left) {
-      player1.xPos -= 5;
+			if(player1.xPos > 0) {
+				player1.xPos -= 5;
+			}
     }
 	}
 	
@@ -97,47 +105,6 @@ $(document).ready(function() {
 			ctx.drawImage(dude, player.xPos, player.yPos-playerHeightOffset);
 		}
 	}
-	
-	
-	/*function updatePlayer(direction) {
-		switch(direction) {
-			case 37: //left arrow
-				if (player1.xPos > 0) {
-					player1.xPos--;
-				}
-				else {
-					alert("EDGE");
-				}
-				break;
-			case 38: //up arrow
-				if (player1.yPos > 0) {
-					player1.yPos--;
-				}
-				else {
-					alert("EDGE");
-				}
-				break;
-			case 39: //right arrow
-				if (player1.xPos < mapWidth-1) {
-					player1.xPos++;
-				}
-				else {
-					alert("EDGE");
-				}
-				break;
-			case 40: //down arrow
-				if (player1.yPos < mapHeight-1) {
-					player1.yPos++;
-				}
-				else {
-					alert("EDGE");
-				}
-				break;
-			default:
-				//De nada
-		}
-	}*/
-	
 	
 	//TODO At some point pass a map as an argument, rather than using global
 	function instantiateMap() {
