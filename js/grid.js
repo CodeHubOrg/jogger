@@ -1,26 +1,29 @@
 $(document).ready(function() {
 	
-	var height = 10;
-	var width = 10;
-	var grid = new Array(width);
+	var mapHeight = 10;
+	var mapWidth = 10;
+	var tileHeight = 171;
+	var tileWidth = 101;
+	var map = new Array(mapWidth);
 		
-	for (var i=0; i<width; i++) {
-		grid[i] = new Array(height);
+	for (var i=0; i<mapWidth; i++) {
+		map[i] = new Array(mapHeight);
 	}
 	
 	var player1 = new Player(5, 5, 'X');
 	
 	//Set up initial environment	
-	populateGrid();
-	updateGrid(player1);
-	printGrid();
+	populateMap();
+	updateMap(player1);
+	printMap();
+	alert(map[0][1].tileType);
 	
 	//Listen for key press
 	$('body').keydown(function(e) {
 		if (e.keyCode >= 37 && e.keyCode <= 40) {
 			updatePlayer(e.keyCode);
-			updateGrid(player1);
-			printGrid();
+			updateMap(player1);
+			printMap();
 		}
 	});
 	
@@ -44,7 +47,7 @@ $(document).ready(function() {
 				}
 				break;
 			case 39: //right arrow
-				if (player1.xPos < width-1) {
+				if (player1.xPos < mapWidth-1) {
 					player1.xPos++;
 				}
 				else {
@@ -52,7 +55,7 @@ $(document).ready(function() {
 				}
 				break;
 			case 40: //down arrow
-				if (player1.yPos < height-1) {
+				if (player1.yPos < mapHeight-1) {
 					player1.yPos++;
 				}
 				else {
@@ -65,26 +68,26 @@ $(document).ready(function() {
 	}
 	
 	
-	//TODO At some point pass a grid as an argument, rather than using global
-	function populateGrid() {
-		for (var i=0; i<width; i++) {
-			for (var j=0; j<height; j++) {
-				grid[i][j] = '0';
+	//TODO At some point pass a map as an argument, rather than using global
+	function populateMap() {
+		for (var i=0; i<mapWidth; i++) {
+			for (var j=0; j<mapHeight; j++) {
+				map[i][j] = new Tile();
 			}
 		}
 	}
 	
 	//TODO accept an array of players as argument
-	function updateGrid(player) {
-		populateGrid();
-		grid[player.xPos][player.yPos] = player.character;
+	function updateMap(player) {
+		populateMap();
+		map[player.xPos][player.yPos] = player.character;
 	}
 	
-	function printGrid() {
+	function printMap() {
 		$('body').empty();
-		for (var j=0; j<height; j++) {
-			for (var i=0; i<width; i++) {
-				$('body').append(grid[i][j]);
+		for (var j=0; j<mapHeight; j++) {
+			for (var i=0; i<mapWidth; i++) {
+				$('body').append(map[i][j]);
 			}
 			$('body').append('<br>');
 		}
@@ -94,6 +97,11 @@ $(document).ready(function() {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.character = character;
+	}
+	
+	function Tile(tileType) {
+    if(typeof(tileType)==='undefined') tileType = "grass";
+		this.tileType = tileType;
 	}
 	
 });
