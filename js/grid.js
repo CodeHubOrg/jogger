@@ -108,6 +108,7 @@ $(document).ready(function() {
 		for (var j=0; j<mapHeight; j++) {
 			var xOffset = 0;
 			for (var i=0; i<mapWidth; i++) {
+				//TODO Obviously find a better way of doing this
 				if (map[i][j].tileType === "grass") {
 					ctx.drawImage(grass, xOffset, yOffset);
 				}
