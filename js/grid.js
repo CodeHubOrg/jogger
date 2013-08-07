@@ -16,9 +16,7 @@ $(document).ready(function() {
 		map[i] = new Array(mapHeight);
 	}
 	
-	//var player1 = new Player(5, 5, 'X');
-	
-	//Canvas stuff. 
+	//Canvas stuff
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
 	ctx.canvas.width = mapPixelWidth;
@@ -32,21 +30,20 @@ $(document).ready(function() {
 	
 	//Set up initial environment	
 	populateMap();
-	//updateMap(player1);
 	printMap();
 	
 	
-	//Listen for key press
+	/*Listen for key press
 	$('body').keydown(function(e) {
 		if (e.keyCode >= 37 && e.keyCode <= 40) {
 			updatePlayer(e.keyCode);
 			updateMap(player1);
 			printMap();
 		}
-	});
+	});*/
 	
 	
-	function updatePlayer(direction) {
+	/*function updatePlayer(direction) {
 		switch(direction) {
 			case 37: //left arrow
 				if (player1.xPos > 0) {
@@ -83,7 +80,7 @@ $(document).ready(function() {
 			default:
 				//De nada
 		}
-	}
+	}*/
 	
 	
 	//TODO At some point pass a map as an argument, rather than using global
@@ -95,20 +92,10 @@ $(document).ready(function() {
 		}
 	}
 	
-	//TODO accept an array of players as argument
+	/*//TODO accept an array of players as argument
 	function updateMap(player) {
 		populateMap();
 		map[player.xPos][player.yPos] = player.character;
-	}
-	
-	/*function printMap() {
-		$('body').empty();
-		for (var j=0; j<mapHeight; j++) {
-			for (var i=0; i<mapWidth; i++) {
-				$('body').append(map[i][j]);
-			}
-			$('body').append('<br>');
-		}
 	}*/
 		
 	function printMap() {
@@ -123,11 +110,11 @@ $(document).ready(function() {
 		}
 	}
 	
-	function Player(xPos, yPos, character) {
+	/*function Player(xPos, yPos, character) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.character = character;
-	}
+	}*/
 	
 	function Tile(tileType) {
     if(typeof(tileType)==='undefined') tileType = "grass";
