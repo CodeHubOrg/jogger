@@ -1,22 +1,40 @@
+//TODO Got a pretty weird mix of jQuery and pure JS syntax here. Pick one.
+
 $(document).ready(function() {
 	
-	var mapHeight = 10;
-	var mapWidth = 10;
+	var mapHeight = 6;
+	var mapWidth = 9;
 	var tileHeight = 171;
+	var tileHeightOffset = 91;
 	var tileWidth = 101;
+	var mapPixelHeight = (mapHeight*tileHeight)-((mapHeight-1)*tileHeightOffset);
+	var mapPixelWidth = mapWidth*tileWidth;
+
+	//2D array for map
 	var map = new Array(mapWidth);
-		
 	for (var i=0; i<mapWidth; i++) {
 		map[i] = new Array(mapHeight);
 	}
 	
-	var player1 = new Player(5, 5, 'X');
+	//var player1 = new Player(5, 5, 'X');
+	
+	//Canvas stuff. 
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+	ctx.canvas.width = mapPixelWidth;
+	ctx.canvas.height = mapPixelHeight;
+	
+
+	//Set up tile images
+	var grass = new Image();
+	grass.src = 'tiles/grass.png';
+
 	
 	//Set up initial environment	
 	populateMap();
-	updateMap(player1);
+	//updateMap(player1);
 	printMap();
-	alert(map[0][1].tileType);
+	
 	
 	//Listen for key press
 	$('body').keydown(function(e) {
@@ -83,13 +101,25 @@ $(document).ready(function() {
 		map[player.xPos][player.yPos] = player.character;
 	}
 	
-	function printMap() {
+	/*function printMap() {
 		$('body').empty();
 		for (var j=0; j<mapHeight; j++) {
 			for (var i=0; i<mapWidth; i++) {
 				$('body').append(map[i][j]);
 			}
 			$('body').append('<br>');
+		}
+	}*/
+		
+	function printMap() {
+		var yOffset = 0;
+		for (var j=0; j<mapHeight; j++) {
+			var xOffset = 0;
+			for (var i=0; i<mapWidth; i++) {
+				ctx.drawImage(grass, xOffset, yOffset);
+				xOffset += tileWidth;
+			}
+			yOffset += (tileHeight-tileHeightOffset);
 		}
 	}
 	
