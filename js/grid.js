@@ -26,10 +26,15 @@ $(document).ready(function() {
 	//Set up tile images
 	var grass = new Image();
 	grass.src = 'tiles/grass.png';
-
 	
+	var water = new Image();
+	water.src = 'tiles/water.png';
+
+
 	//Set up initial environment	
 	populateMap();
+	map[6][2].tileType = "water";
+	
 	printMap();
 	
 	
@@ -103,7 +108,12 @@ $(document).ready(function() {
 		for (var j=0; j<mapHeight; j++) {
 			var xOffset = 0;
 			for (var i=0; i<mapWidth; i++) {
-				ctx.drawImage(grass, xOffset, yOffset);
+				if (map[i][j].tileType === "grass") {
+					ctx.drawImage(grass, xOffset, yOffset);
+				}
+				else if (map[i][j].tileType === "water") {
+					ctx.drawImage(water, xOffset, yOffset);
+				}
 				xOffset += tileWidth;
 			}
 			yOffset += (tileHeight-tileHeightOffset);
