@@ -10,7 +10,7 @@ $(document).ready(function() {
 	var mapPixelHeight = (mapHeight*tileHeight)-((mapHeight-1)*tileHeightOffset);
 	var mapPixelWidth = mapWidth*tileWidth;
 	var playerHeightOffset = 22;
-	var oneFrameLength = 1000 / 20 ; //Bump up to 1000/60 after optimisation
+	var oneFrameLength = 1000 / 40 ;
 
 	//2D array for map
 	var map = new Array(mapWidth);
@@ -23,9 +23,6 @@ $(document).ready(function() {
 	var ctx = canvas.getContext("2d");
 	ctx.canvas.width = mapPixelWidth;
 	ctx.canvas.height = mapPixelHeight;
-	//Make background sky blue
-	ctx.fillStyle="#3BB9FF";
-	ctx.fillRect(0,0,mapPixelWidth,tileHeight);
 	
 
 	//Set up tile images
@@ -62,32 +59,44 @@ $(document).ready(function() {
 	printMap();
 	
 	var mainloop = function() {
-		//update();
+		update();
 		draw();
 	};
 	setInterval(mainloop, oneFrameLength);
 	
 	
+	function update() {
+    if(keydown.up) {
+      player1.yPos -= 5;
+    }
+    if(keydown.right) {
+      player1.xPos += 5;
+    }
+    if(keydown.down) {
+      player1.yPos += 5;
+    }
+    if(keydown.left) {
+      player1.xPos -= 5;
+    }
+	}
+	
+	
 	function draw() {
+		drawSky();
 		printMap();
 		drawPlayer(player1);
 	}
 	
+	function drawSky() {
+		ctx.fillStyle="#3BB9FF"; //Dark sky blue
+		ctx.fillRect(0,0,mapPixelWidth,tileHeight);
+	}
 	
 	function drawPlayer(player) {
 		if (player.character === "dude") {
 			ctx.drawImage(dude, player.xPos, player.yPos-playerHeightOffset);
 		}
 	}
-	
-	/*Listen for key press
-	$('body').keydown(function(e) {
-		if (e.keyCode >= 37 && e.keyCode <= 40) {
-			updatePlayer(e.keyCode);
-			updateMap(player1);
-			printMap();
-		}
-	});*/
 	
 	
 	/*function updatePlayer(direction) {
