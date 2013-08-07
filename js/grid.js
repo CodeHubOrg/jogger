@@ -9,6 +9,8 @@ $(document).ready(function() {
 	var tileWidth = 101;
 	var mapPixelHeight = (mapHeight*tileHeight)-((mapHeight-1)*tileHeightOffset);
 	var mapPixelWidth = mapWidth*tileWidth;
+	var playerHeightOffset = 22;
+	var oneFrameLength = 1000 / 20 ; //Bump up to 1000/60 after optimisation
 
 	//2D array for map
 	var map = new Array(mapWidth);
@@ -21,6 +23,9 @@ $(document).ready(function() {
 	var ctx = canvas.getContext("2d");
 	ctx.canvas.width = mapPixelWidth;
 	ctx.canvas.height = mapPixelHeight;
+	//Make background sky blue
+	ctx.fillStyle="#3BB9FF";
+	ctx.fillRect(0,0,mapPixelWidth,tileHeight);
 	
 
 	//Set up tile images
@@ -29,14 +34,51 @@ $(document).ready(function() {
 	
 	var water = new Image();
 	water.src = 'tiles/water.png';
-
+	
+	var earth = new Image();
+	earth.src = 'tiles/earth.png';
+	
+	
+	//Set up characters
+	var dude =  new Image();
+	dude.src = 'characters/dude.png';
+	
 
 	//Set up initial environment	
-	populateMap();
+	instantiateMap();
 	map[6][2].tileType = "water";
+	map[6][3].tileType = "water";
+	map[6][4].tileType = "water";
+	map[5][3].tileType = "water";
+	map[7][3].tileType = "water";
+	map[7][4].tileType = "water";
+	map[7][5].tileType = "earth";
+	map[5][4].tileType = "earth";
+	map[5][5].tileType = "earth";
+	map[6][5].tileType = "earth";
 	
+	var player1 = new Player(0,0,"dude");
+		
 	printMap();
 	
+	var mainloop = function() {
+		//update();
+		draw();
+	};
+	setInterval(mainloop, oneFrameLength);
+	
+	
+	function draw() {
+		printMap();
+		drawPlayer(player1);
+	}
+	
+	
+	function drawPlayer(player) {
+		if (player.character === "dude") {
+			ctx.drawImage(dude, player.xPos, player.yPos-playerHeightOffset);
+		}
+	}
 	
 	/*Listen for key press
 	$('body').keydown(function(e) {
@@ -89,7 +131,7 @@ $(document).ready(function() {
 	
 	
 	//TODO At some point pass a map as an argument, rather than using global
-	function populateMap() {
+	function instantiateMap() {
 		for (var i=0; i<mapWidth; i++) {
 			for (var j=0; j<mapHeight; j++) {
 				map[i][j] = new Tile();
@@ -115,17 +157,20 @@ $(document).ready(function() {
 				else if (map[i][j].tileType === "water") {
 					ctx.drawImage(water, xOffset, yOffset);
 				}
+				else if (map[i][j].tileType === "earth") {
+					ctx.drawImage(earth, xOffset, yOffset);
+				}
 				xOffset += tileWidth;
 			}
 			yOffset += (tileHeight-tileHeightOffset);
 		}
 	}
 	
-	/*function Player(xPos, yPos, character) {
+	function Player(xPos, yPos, character) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.character = character;
-	}*/
+	}
 	
 	function Tile(tileType) {
     if(typeof(tileType)==='undefined') tileType = "grass";
