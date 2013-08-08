@@ -56,23 +56,22 @@ $(document).ready(function() {
 	map[6][5].tileType = "earth";
 	
 	var player1 = new Player(0,0,"dude");
-	
-	
-	
+		
 	var mainloop = function() {
 		var now = Date.now();
 		var dt = now - lastUpdate;
+		dt /= 1000; //Gives us time in seconds
 		lastUpdate = now;
-		
+				
 		update(dt);
 		draw(dt);
 	};
 	var myInterval = setInterval(mainloop, oneFrameLength);
 	
-	function update() {
-		listen();
-    player1.actualYPos = player1.actualYPos - (player1.actualYPos - player1.yPos);
-    player1.actualXPos = player1.actualXPos - (player1.actualXpos - player1.xPos);
+	function update(dt) {
+		listen();		
+    player1.actualYPos = player1.actualYPos - ((player1.actualYPos - player1.yPos) * player1.speed * dt);
+    player1.actualXPos = player1.actualXPos - ((player1.actualXPos - player1.xPos) * player1.speed * dt);
 	}
 	
 	function listen() {
@@ -98,7 +97,7 @@ $(document).ready(function() {
 		}
 	}
 	
-	function draw() {
+	function draw(dt) {
 		drawSky();
 		printMap();
 		drawPlayer(player1);
@@ -111,7 +110,7 @@ $(document).ready(function() {
 	
 	function drawPlayer(player) {
 		if (player.character === "dude") {
-			ctx.drawImage(dude, player.xPos, player.yPos-playerHeightOffset);
+			ctx.drawImage(dude, player.actualXPos, player.actualYPos-playerHeightOffset);
 		}
 	}
 	
@@ -151,6 +150,7 @@ $(document).ready(function() {
 		this.character = character;
 		this.actualXPos = xPos;
 		this.actualYPos = yPos;
+		this.speed = 1
 	}
 	
 	function Tile(tileType) {
