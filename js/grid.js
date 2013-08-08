@@ -55,8 +55,8 @@ $(document).ready(function() {
 	map[6][5].tileType = "earth";
 	
 	var player1 = new Player(0,0,"dude");
-		
-	printMap();
+	
+	
 	
 	var mainloop = function() {
 		update();
@@ -64,30 +64,34 @@ $(document).ready(function() {
 	};
 	setInterval(mainloop, oneFrameLength);
 	
-	
 	function update() {
-    if(keydown.up) {
-			if(player1.yPos > 0) {
-				player1.yPos -= 5;
-			}
-    }
-    if(keydown.right) {
-			if(player1.xPos < mapPixelWidth-tileWidth) {
-				player1.xPos += 5;
-			}
-    }
-    if(keydown.down) {
-			if(player1.yPos < mapPixelHeight-tileHeight) {
-				player1.yPos += 5;
-			}
-    }
-    if(keydown.left) {
-			if(player1.xPos > 0) {
-				player1.xPos -= 5;
-			}
-    }
+		listen();
+    player1.actualYPos = player1.actualYPos - (player1.actualYPos - player1.yPos);
+    player1.actualXPos = player1.actualXPos - (player1.actualXpos - player1.xPos);
 	}
 	
+	function listen() {
+		if(keydown.up) {
+			if(player1.yPos > 0) {
+					player1.yPos -= tileHeightOffset;
+			}
+		}
+		if(keydown.right) {
+			if(player1.xPos < mapPixelWidth-tileWidth) {
+				player1.xPos += tileWidth;
+			}
+		}
+		if(keydown.down) {
+			if(player1.yPos < mapPixelHeight-tileHeight) {
+				player1.yPos += tileHeight;
+			}
+		}
+		if(keydown.left) {
+			if(player1.xPos > 0) {
+				player1.xPos -= tileWidth;
+			}
+		}
+	}
 	
 	function draw() {
 		drawSky();
@@ -114,12 +118,6 @@ $(document).ready(function() {
 			}
 		}
 	}
-	
-	/*//TODO accept an array of players as argument
-	function updateMap(player) {
-		populateMap();
-		map[player.xPos][player.yPos] = player.character;
-	}*/
 		
 	function printMap() {
 		var yOffset = 0;
@@ -146,10 +144,12 @@ $(document).ready(function() {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.character = character;
+		this.actualXPos = xPos;
+		this.actualYPos = yPos;
 	}
 	
 	function Tile(tileType) {
-    if(typeof(tileType)==='undefined') tileType = "grass";
+		if(typeof(tileType)==='undefined') tileType = "grass";
 		this.tileType = tileType;
 	}
 	
