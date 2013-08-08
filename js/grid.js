@@ -56,6 +56,8 @@ $(document).ready(function() {
 	map[6][5].tileType = "earth";
 	
 	var player1 = new Player(0,0,"dude");
+	
+	listen();
 		
 	var mainloop = function() {
 		var now = Date.now();
@@ -68,33 +70,42 @@ $(document).ready(function() {
 	};
 	var myInterval = setInterval(mainloop, oneFrameLength);
 	
-	function update(dt) {
-		listen();		
+	function update(dt) {	
     player1.actualYPos = player1.actualYPos - ((player1.actualYPos - player1.yPos) * player1.speed * dt);
     player1.actualXPos = player1.actualXPos - ((player1.actualXPos - player1.xPos) * player1.speed * dt);
 	}
 	
-	function listen() {
-		if(keydown.up) {
+	
+	function updatePlayer(direction) {
+		if(direction === 38) { //up
 			if(player1.yPos > 0) {
-					player1.yPos -= tileHeightOffset;
+					player1.yPos -= tileHeight;
 			}
 		}
-		if(keydown.right) {
+		if(direction === 39) { //right
 			if(player1.xPos < mapPixelWidth-tileWidth) {
 				player1.xPos += tileWidth;
 			}
 		}
-		if(keydown.down) {
+		if(direction === 40) { //down
 			if(player1.yPos < mapPixelHeight-tileHeight) {
 				player1.yPos += tileHeight;
 			}
 		}
-		if(keydown.left) {
+		if(direction === 37) { //left
 			if(player1.xPos > 0) {
 				player1.xPos -= tileWidth;
 			}
 		}
+	}
+	
+	
+	function listen() {
+		$(document).keypress(function(e) {
+			if (e.keyCode >= 37 && e.keyCode <= 40) {
+				updatePlayer(e.keyCode);
+			}
+		});
 	}
 	
 	function draw(dt) {
