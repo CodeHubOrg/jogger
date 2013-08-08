@@ -57,6 +57,7 @@ $(document).ready(function() {
 	
 	var player1 = new Player(0,0,"dude");
 	
+	//Set up event listeners
 	listen();
 		
 	var mainloop = function() {
@@ -70,13 +71,24 @@ $(document).ready(function() {
 	};
 	var myInterval = setInterval(mainloop, oneFrameLength);
 	
-	function update(dt) {	
+	function update(dt) {
+		updatePlayer(dt);
+	}
+		
+	function listen() {
+		$(document).keypress(function(e) {
+			if (e.keyCode >= 37 && e.keyCode <= 40) {
+				updatePlayerTarget(e.keyCode);
+			}
+		});
+	}
+	
+	function updatePlayer(dt) {
     player1.actualYPos = player1.actualYPos - ((player1.actualYPos - player1.yPos) * player1.speed * dt);
     player1.actualXPos = player1.actualXPos - ((player1.actualXPos - player1.xPos) * player1.speed * dt);
 	}
 	
-	
-	function updatePlayer(direction) {
+	function updatePlayerTarget(direction) {
 		if(direction === 38) { //up
 			if(player1.yPos > 0) {
 					player1.yPos -= tileHeight;
@@ -99,14 +111,6 @@ $(document).ready(function() {
 		}
 	}
 	
-	
-	function listen() {
-		$(document).keypress(function(e) {
-			if (e.keyCode >= 37 && e.keyCode <= 40) {
-				updatePlayer(e.keyCode);
-			}
-		});
-	}
 	
 	function draw(dt) {
 		drawSky();
