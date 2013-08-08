@@ -10,7 +10,8 @@ $(document).ready(function() {
 	var mapPixelHeight = (mapHeight*tileHeight)-((mapHeight-1)*tileHeightOffset);
 	var mapPixelWidth = mapWidth*tileWidth;
 	var playerHeightOffset = 22;
-	var oneFrameLength = 1000 / 40 ;
+	var oneFrameLength = 1000 / 40;
+	var lastUpdate = Date.now();
 
 	//2D array for map
 	var map = new Array(mapWidth);
@@ -59,10 +60,14 @@ $(document).ready(function() {
 	
 	
 	var mainloop = function() {
-		update();
-		draw();
+		var now = Date.now();
+		var dt = now - lastUpdate;
+		lastUpdate = now;
+		
+		update(dt);
+		draw(dt);
 	};
-	setInterval(mainloop, oneFrameLength);
+	var myInterval = setInterval(mainloop, oneFrameLength);
 	
 	function update() {
 		listen();
